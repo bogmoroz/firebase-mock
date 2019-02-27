@@ -241,8 +241,12 @@ MockFirestoreDocument.prototype.getCollections = function() {
   });
 };
 
-MockFirestoreDocument.prototype.onSnapshot = function() {
-  console.log('On snapshot!!');
+MockFirestoreDocument.prototype.onSnapshot = function(callback) {
+  const dataForCallback = new DocumentSnapshot(this.id, this.ref, this.data);
+  console.log(dataForCallback);
+  return {
+    dataForCallback
+  };
 };
 
 MockFirestoreDocument.prototype._hasChild = function(key) {

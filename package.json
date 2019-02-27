@@ -1,7 +1,7 @@
 {
   "name": "firebase-mock-observis",
-  "version": "2.2.10",
-  "description": "Firebase mock library for writing unit tests",
+  "version": "1.0.0",
+  "description": "Firebase mock library for writing unit tests. Fork of the main library by Brian Soumakian. Expanded functionality of firestore-document",
   "main": "./src",
   "scripts": {
     "test": "gulp lint && gulp test",
@@ -11,22 +11,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/soumak77/firebase-mock.git"
+    "url": "git://github.com/bogmoroz/firebase-mock.git"
   },
   "keywords": [
     "firebase",
     "mock"
   ],
-  "author": "Brian Soumakian",
+  "author": "Brian Soumakian, Bogdan Moroz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/soumak77/firebase-mock/issues"
+    "url": "https://github.com/bogmoroz/firebase-mock/pulls"
   },
   "files": [
     "src/",
     "browser/"
   ],
-  "homepage": "https://github.com/soumak77/firebase-mock",
+  "homepage": "https://github.com/bogmoroz/firebase-mock",
   "dependencies": {
     "firebase-auto-ids": "~1.1.0",
     "lodash.assign": "^4.2.0",
