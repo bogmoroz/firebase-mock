@@ -2,7 +2,7 @@
 
 var _ = require('./lodash');
 
-function MockFirestoreDocumentSnapshot (id, ref, data) {
+function MockFirestoreDocumentSnapshot(id, ref, data) {
   this.id = id;
   this.ref = ref;
   this._snapshotdata = _.cloneDeep(data) || null;
@@ -12,7 +12,7 @@ function MockFirestoreDocumentSnapshot (id, ref, data) {
   this.exists = this._snapshotdata !== null;
 }
 
-MockFirestoreDocumentSnapshot.prototype.get = function (path) {
+MockFirestoreDocumentSnapshot.prototype.get = function(path) {
   if (!path || !this.exists) return undefined;
 
   var parts = path.split('.');

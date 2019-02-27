@@ -1,5 +1,5 @@
 {
-  "name": "firebase-mock",
+  "name": "firebase-mock-observis",
   "version": "2.2.10",
   "description": "Firebase mock library for writing unit tests",
   "main": "./src",
