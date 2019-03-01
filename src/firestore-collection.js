@@ -77,7 +77,6 @@ MockFirestoreCollection.prototype.doc = function(path) {
 
 MockFirestoreCollection.prototype.onSnapshot = function(callback) {
   const dataForCallback = new QuerySnapshot(this.ref, this.data);
-  console.log(dataForCallback);
   return {
     dataForCallback
   };
