@@ -25,18 +25,18 @@ function MockFirestoreQuery(path, data, parent, name) {
   this._setData(data);
 }
 
-MockFirestoreQuery.prototype.flush = function (delay) {
+MockFirestoreQuery.prototype.flush = function(delay) {
   this.queue.flush(delay);
   return this;
 };
 
-MockFirestoreQuery.prototype.autoFlush = function (delay) {
+MockFirestoreQuery.prototype.autoFlush = function(delay) {
   if (_.isUndefined(delay)) {
     delay = true;
   }
   if (this.flushDelay !== delay) {
     this.flushDelay = delay;
-    _.forEach(this.children, function (child) {
+    _.forEach(this.children, function(child) {
       child.autoFlush(delay);
     });
     if (this.parent) {
@@ -46,27 +46,27 @@ MockFirestoreQuery.prototype.autoFlush = function (delay) {
   return this;
 };
 
-MockFirestoreQuery.prototype.getFlushQueue = function () {
+MockFirestoreQuery.prototype.getFlushQueue = function() {
   return this.queue.getEvents();
 };
 
-MockFirestoreQuery.prototype._setData = function (data) {
+MockFirestoreQuery.prototype._setData = function(data) {
   this.data = utils.cleanFirestoreData(_.cloneDeep(data) || null);
 };
 
-MockFirestoreQuery.prototype._getData = function () {
+MockFirestoreQuery.prototype._getData = function() {
   return _.cloneDeep(this.data);
 };
 
-MockFirestoreQuery.prototype.toString = function () {
+MockFirestoreQuery.prototype.toString = function() {
   return this.path;
 };
 
-MockFirestoreQuery.prototype.get = function () {
+MockFirestoreQuery.prototype.get = function() {
   var err = this._nextErr('get');
   var self = this;
-  return new Promise(function (resolve, reject) {
-    self._defer('get', _.toArray(arguments), function () {
+  return new Promise(function(resolve, reject) {
+    self._defer('get', _.toArray(arguments), function() {
       var results = {};
       var limit = 0;
 
@@ -88,7 +88,13 @@ MockFirestoreQuery.prototype.get = function () {
               });
             });
 
-            queryable = _.orderBy(queryable, _.map(self.orderedProperties, function(p) { return 'data.' + p; }), self.orderedDirections);
+            queryable = _.orderBy(
+              queryable,
+              _.map(self.orderedProperties, function(p) {
+                return 'data.' + p;
+              }),
+              self.orderedDirections
+            );
 
             queryable.forEach(function(q) {
               if (self.limited <= 0 || limit < self.limited) {
@@ -98,9 +104,18 @@ MockFirestoreQuery.prototype.get = function () {
             });
           }
 
-          resolve(new QuerySnapshot(self.parent === null ? self : self.parent.collection(self.id), results));
+          resolve(
+            new QuerySnapshot(
+              self.parent === null ? self : self.parent.collection(self.id),
+              results
+            )
+          );
         } else {
-          resolve(new QuerySnapshot(self.parent === null ? self : self.parent.collection(self.id)));
+          resolve(
+            new QuerySnapshot(
+              self.parent === null ? self : self.parent.collection(self.id)
+            )
+          );
         }
       } else {
         reject(err);
@@ -109,11 +124,11 @@ MockFirestoreQuery.prototype.get = function () {
   });
 };
 
-MockFirestoreQuery.prototype.stream = function () {
+MockFirestoreQuery.prototype.stream = function() {
   var stream = new Stream();
 
-  this.get().then(function (snapshots) {
-    snapshots.forEach(function (snapshot) {
+  this.get().then(function(snapshots) {
+    snapshots.forEach(function(snapshot) {
       stream.emit('data', snapshot);
     });
     stream.emit('end');
@@ -122,12 +137,14 @@ MockFirestoreQuery.prototype.stream = function () {
   return stream;
 };
 
-MockFirestoreQuery.prototype.where = function (property, operator, value) {
+MockFirestoreQuery.prototype.where = function(property, operator, value) {
   var query;
 
   // check if unsupported operator
   if (operator !== '==') {
-    console.warn('Using unsupported where() operator for firebase-mock, returning entire dataset');
+    console.warn(
+      'Using unsupported where() operator for firebase-mock, returning entire dataset'
+    );
     return this;
   } else {
     if (_.size(this.data) !== 0) {
@@ -151,20 +168,34 @@ MockFirestoreQuery.prototype.where = function (property, operator, value) {
   }
 };
 
-MockFirestoreQuery.prototype.orderBy = function (property, direction) {
-  var query = new MockFirestoreQuery(this.path, this._getData(), this.parent, this.id);
+MockFirestoreQuery.prototype.orderBy = function(property, direction) {
+  var query = new MockFirestoreQuery(
+    this.path,
+    this._getData(),
+    this.parent,
+    this.id
+  );
   query.orderedProperties.push(property);
   query.orderedDirections.push(direction || 'asc');
   return query;
 };
 
-MockFirestoreQuery.prototype.limit = function (limit) {
-  var query = new MockFirestoreQuery(this.path, this._getData(), this.parent, this.id);
+MockFirestoreQuery.prototype.limit = function(limit) {
+  var query = new MockFirestoreQuery(
+    this.path,
+    this._getData(),
+    this.parent,
+    this.id
+  );
   query.limited = limit;
   return query;
 };
 
-MockFirestoreQuery.prototype._defer = function (sourceMethod, sourceArgs, callback) {
+MockFirestoreQuery.prototype._defer = function(
+  sourceMethod,
+  sourceArgs,
+  callback
+) {
   this.queue.push({
     fn: callback,
     context: this,
@@ -179,10 +210,17 @@ MockFirestoreQuery.prototype._defer = function (sourceMethod, sourceArgs, callba
   }
 };
 
-MockFirestoreQuery.prototype._nextErr = function (type) {
+MockFirestoreQuery.prototype._nextErr = function(type) {
   var err = this.errs[type];
   delete this.errs[type];
   return err || null;
+};
+
+MockFirestoreQuery.prototype.onSnapshot = function(callback) {
+  const dataForCallback = new QuerySnapshot(this.ref, this.data);
+  return {
+    dataForCallback
+  };
 };
 
 function extractName(path) {
