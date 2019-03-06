@@ -156,6 +156,16 @@ MockFirestoreQuery.prototype.where = function(property, operator, value) {
               results[key] = _.cloneDeep(data);
             }
             break;
+          case '>=':
+            if (_.get(data, property) >= value) {
+              results[key] = _.cloneDeep(data);
+            }
+            break;
+          case '<=':
+            if (_.get(data, property) <= value) {
+              results[key] = _.cloneDeep(data);
+            }
+            break;
           default:
             results[key] = _.cloneDeep(data);
             break;

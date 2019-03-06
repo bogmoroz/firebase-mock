@@ -1,6 +1,6 @@
 {
   "name": "firebase-mock-observis",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Firebase mock library for writing unit tests. Fork of the main library by Brian Soumakian. Expanded functionality of firestore-document",
   "main": "./src",
   "scripts": {

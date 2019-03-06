@@ -7,6 +7,7 @@ Fork of the main library by Brian Soumakian. Expanded functionality:
 - onSnapshot method added to MockFirestoreDocument, returning MockFirebaseDocumentSnapshot object
 - onSnapshot method added to MockFirestoreCollection, returning MockQuerySnapshot object
 - onSnapshot method added to MockFirestoreQuery, returning MockQuerySnapshot object
+- MockFirestoreQuery where() method is updated to support '>=' and '<=' query operators (original library only supports '==')
 
 Firebase Mock extends [mockfirebase](https://github.com/katowulf/mockfirebase) to provide support for the following Firebase Javascript SDKS:
 
